@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -15,10 +15,19 @@ import useFetch from "../../../hook/useFetch";
 
 const Popularjobs = () => {
   const router = useRouter();
-  const { data, isLoading, error } = useFetch("search", {
-    query: "React developer",
-    num_pages: 1,
-  });
+  const [query, setQuery] = useState("popular");
+
+  let queryObject = {};
+  if (query) {
+    queryObject.query = query;
+  } else {
+    queryObject.query = "popular";
+  }
+
+  const { data, isLoading, error } = useFetch(
+    "search",
+    new URLSearchParams(queryObject).toString()
+  );
 
   return (
     <View style={styles.container}>
